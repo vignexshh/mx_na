@@ -35,7 +35,7 @@ const SidebarItem = ({ href, icon: Icon, label }) => (
 const Sidebar = () => {
   return (
     <TooltipProvider>
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-secondary sm:flex">
+      <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r  sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 py-4">
           <Link
             href="#"
@@ -55,14 +55,14 @@ const Sidebar = () => {
       <Sheet>
         <SheetTrigger asChild>
           <Button
-            className="fixed top-4 left-4 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground sm:hidden"
+            className="fixed top-4 left-4 z-20 flex h-12 w-12 items-center justify-center  bg-primary text-primary-foreground sm:hidden"
           >
             <Menu className="h-6 w-6" />
             <span className="sr-only">Toggle Sidebar</span>
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="p-0">
-          <nav className="flex flex-col items-start gap-4 px-4 py-4">
+          <nav className="mt-12 ml-6  flex flex-col items-start gap-7 px-4 py-4">
             {sidebarItems.map((item, index) => (
               <Link
                 key={index}

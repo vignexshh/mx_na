@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 
 
 export const metadata = {
-  title: 'My App',
+  title: 'MedicalHunt - Neet Analysis Platform',
   description: 'User Signup Page',
 }
 
