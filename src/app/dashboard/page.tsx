@@ -80,82 +80,78 @@ const timeZoneGroups2 = [
   },
 ];
 const HomePage = () => {
-  const router = useRouter(); 
+  const router = useRouter();
   const currentPath = typeof window !== "undefined" ? window.location.pathname : '';
   const pageName = currentPath.split('/').pop();
-  
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: '1rem' }}>
-      
-      <div>
-        <Sidebar />
-      </div> 
-      <div className="md:ml-16 sm:ml-0 " > 
-        <div className='pl-5 lg:w-[350px] sm:w-full md:w-full' >
-      <div className='border' >
-        <h1 className='text-xl'> Welcome to {pageName} </h1> 
-        </div>
-      
-        <div style={{  display: 'flex', flexDirection: 'column', gap: '1rem', }}>
-          
-        
-          <ScrollArea className="h-[500px]  rounded-md border p-4">
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: '1rem' }}>
-            <Card>
-                <CardHeader>
-                  <CardTitle>Input Fields</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div style={{display: 'flex', flexDirection: 'column', gap:'0.5rem'}}> 
-                <SelectDropdown groups={timeZoneGroups} />
-                <SelectDropdown groups={timeZoneGroups2} />
-                <SelectDropdown groups={timeZoneGroups} />
-                </div>
-                </CardContent>
-              </Card>
+    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Input Fields</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div style={{display: 'flex', flexDirection: 'column', gap:'0.5rem'}}> 
-                <SelectDropdown groups={timeZoneGroups} />
-                <SelectDropdown groups={timeZoneGroups2} />
-                <SelectDropdown groups={timeZoneGroups} />
-                </div>
-                </CardContent>
-              </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Input Fields</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div style={{display: 'flex', flexDirection: 'column', gap:'0.5rem'}}> 
-                <SelectDropdown groups={timeZoneGroups} />
-                <SelectDropdown groups={timeZoneGroups2} />
-                <SelectDropdown groups={timeZoneGroups} />
-                </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Input Fields</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div style={{display: 'flex', flexDirection: 'column', gap:'0.5rem'}}> 
-                <SelectDropdown groups={timeZoneGroups} />
-                <SelectDropdown groups={timeZoneGroups2} />
-                <SelectDropdown groups={timeZoneGroups} />
-                </div>
-                </CardContent>
-              </Card>
-              {/* Add more cards as needed */}
-            </div>
-            <ScrollBar />
-          </ScrollArea>
+      <Sidebar />
+      <div className="sm:pl-0 md:pl-14 lg:pl-14 "  >
+        <div className='border p-4' >
+          <h1 className='text-xl'> Welcome to {pageName} </h1>
         </div>
+        <div className=' lg:w-[350px] sm:w-full md:w-full border-r bg-secondary ' >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0rem', }}>
+            <ScrollArea className="h-[500px]   p-4  ">
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: '1rem' }}>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Input Fields</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <SelectDropdown groups={timeZoneGroups} />
+                      <SelectDropdown groups={timeZoneGroups2} />
+                      <SelectDropdown groups={timeZoneGroups} />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Input Fields</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <SelectDropdown groups={timeZoneGroups} />
+                      <SelectDropdown groups={timeZoneGroups2} />
+                      <SelectDropdown groups={timeZoneGroups} />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Input Fields</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <SelectDropdown groups={timeZoneGroups} />
+                      <SelectDropdown groups={timeZoneGroups2} />
+                      <SelectDropdown groups={timeZoneGroups} />
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Input Fields</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <SelectDropdown groups={timeZoneGroups} />
+                      <SelectDropdown groups={timeZoneGroups2} />
+                      <SelectDropdown groups={timeZoneGroups} />
+                    </div>
+                  </CardContent>
+                </Card>
+                {/* Add more cards as needed */}
+              </div>
+              <ScrollBar/>
+            </ScrollArea>
+          </div>
         </div>
       </div>
     </div>

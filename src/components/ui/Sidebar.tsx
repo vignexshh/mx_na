@@ -9,12 +9,12 @@ import { Button } from '@/components/ui/button';
 
 const sidebarItems = [
   { href: "#", icon: Home, label: "Dashboard" },
-  { href: "/dashboard/accounts", icon: ShoppingCart, label: "Orders" },
+  { href: "#", icon: ShoppingCart, label: "Orders" },
   { href: "#", icon: Package, label: "Products" },
   { href: "#", icon: Users2, label: "Customers" },
   { href: "#", icon: LineChart, label: "Analytics" },
   { href: "#", icon: Settings, label: "Settings" },
-  { href: "#", icon: Settings, label: "EDit Profile" },
+  
 ];
 
 const SidebarItem = ({ href, icon: Icon, label }) => (
@@ -35,11 +35,11 @@ const SidebarItem = ({ href, icon: Icon, label }) => (
 const Sidebar = () => {
   return (
     <TooltipProvider>
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r  sm:flex">
+      <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-white sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 py-4">
           <Link
             href="#"
-            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-md bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
           >
             <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
             <span className="sr-only">Acme Inc</span>
