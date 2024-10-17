@@ -11,6 +11,21 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 
+
+// const ISTTime = {
+//   getCurrentTime: function() {
+//     // Get the current time in UTC
+//     const currentTimeUTC = new Date();
+
+//     // Convert UTC time to IST by adding 5 hours and 30 minutes
+//     const offset = 5.5 * 60 * 60 * 1000; // Offset for IST (5 hours 30 minutes in milliseconds)
+//     const istTime = new Date(currentTimeUTC.getTime() + offset);
+
+//     return istTime.toLocaleString(); // Return the IST time in a readable format
+//   }
+// };
+// const currentIST = ISTTime.getCurrentTime();
+
 const SignupPage = () => {
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
@@ -78,14 +93,14 @@ const SignupPage = () => {
   return (
     <div className="flex min-h-screen">
       {/* First Column - Black Background */}
-      <div className="hidden md:flex w-1/2 bg-black p-[5%] items-center justify-center">
+      <div className="hidden md:flex w-1/2 bg-black p-[5%] items-center justify-center " >
         <h1 className="text-3xl text-white font-bold mb-6">MedicalHunt ⦿</h1>
       </div>
 
       {/* Second Column - Default Background */}
-      <div className="w-full md:w-1/2 flex items-center justify-center bg-white">
-        <div className="w-full max-w-md p-8 bg-white rounded-lg">
-          <div className="flex justify-center"> <h1 className="text-3xl font-bold mb-6 ">Create an Account</h1> </div>
+      <div className="w-full md:w-1/2 flex flex-col items-center justify-end bg-slate-100  md:justify-center">
+        <div className="w-full md:max-w-md p-8 bg-white border rounded-t-3xl md:rounded-3xl ">
+          
           {/* Tabs for Login and Signup */} 
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
@@ -95,6 +110,7 @@ const SignupPage = () => {
             
             {/* Signin Tab */}
             <TabsContent value="signin">
+            <div className="flex justify-center p-10"> <h1 className="text-4xl font-medium mb-6 text-center ">Continue With Existing Account</h1> </div>
               {/* Signin Form */}
               
               <form onSubmit={handleSigninSubmit}>
@@ -137,6 +153,7 @@ const SignupPage = () => {
             
             {/* Signup Tab */}
             <TabsContent value="signup">
+            <div className="flex justify-center p-10"> <h1 className="text-4xl font-medium mb-6 text-center ">Create New Account</h1> </div>
               
               {/* Create Account Section */}
               
