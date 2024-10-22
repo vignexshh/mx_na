@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { GoogleSignIn } from '@/components/auth/GoogleSignIn'
 import {
   Tabs,
   TabsContent,
@@ -212,6 +213,7 @@ const SignupPage = () => {
                 <Button type="submit" className="w-full mb-4 ">
                   Continue Sign Up
                 </Button>
+                <GoogleSignIn />
               </form>
             </TabsContent>
           </Tabs>

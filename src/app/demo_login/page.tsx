@@ -1,102 +1,202 @@
 "use client";
-import React, { useState, useRef } from 'react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
 
-const EmailAuthComponent = () => {
-  const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [isOtpSent, setIsOtpSent] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const otpInputs = useRef([]);
+type AuthState = 'email' | 'password' | 'createAccount' | 'otp' | 'newPassword';
 
-  const handleSendOtp = async () => {
-    // Simulate API call
-    setTimeout(() => {
-      if (email && email.includes('@')) {
-        setIsOtpSent(true);
-        setSuccess('OTP sent successfully. Please check your email.');
-        setError('');
+const AuthFlow: React.FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [otp, setOtp] = useState<string>('');
+  const [state, setState] = useState<AuthState>('email');
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [dialogue, setDialogue] = useState<string | null>(null);
+  
+  const router = useRouter();
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithOtp({ email });
+      if (error) throw error;
+      if (data) {
+        setState('password');
       } else {
-        setError('Invalid email. Please try again.');
+        setDialogue("Oops, seems like your email isn't signed up");
+        setState('createAccount');
       }
-    }, 1000);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error:', error.message);
+        setError(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleVerifyOtp = async () => {
-    const enteredOtp = otp.join('');
-    // Simulate OTP verification
-    setTimeout(() => {
-      if (enteredOtp === '123456') { // Pretend '123456' is the correct OTP
-        setSuccess('Authentication successful!');
-        setError('');
-      } else {
-        setError('Invalid OTP. Please try again.');
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      router.push('/dashboard');
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error:', error.message);
+        setError(error.message);
       }
-    }, 1000);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleOtpChange = (index, value) => {
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
+  const handleCreateAccount = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) throw error;
+      setState('otp');
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error:', error.message);
+        setError(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    if (value && index < 5) {
-      otpInputs.current[index + 1].focus();
+  const handleOtpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({ email, token: otp, type: 'signup' });
+      if (error) throw error;
+      setState('newPassword');
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error:', error.message);
+        setError(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNewPasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    if (password !== confirmPassword) {
+      setError("Passwords don't match");
+      return;
+    }
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.updateUser({ password });
+      if (error) throw error;
+      setState('email');
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error:', error.message);
+        setError(error.message);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Email Authentication</CardTitle>
-        <CardDescription>Enter your email to receive an OTP</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {!isOtpSent ? (
-          <Input
+    <div>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {dialogue && <p>{dialogue}</p>}
+      
+      {state === 'email' && (
+        <form onSubmit={handleEmailSubmit}>
+          <input
             type="email"
-            placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mb-4"
+            placeholder="Enter your email"
+            required
           />
-        ) : (
-          <div className="flex justify-between mb-4">
-            {otp.map((digit, index) => (
-              <Input
-                key={index}
-                type="text"
-                maxLength={1}
-                value={digit}
-                onChange={(e) => handleOtpChange(index, e.target.value)}
-                className="w-10 text-center"
-                ref={(el) => (otpInputs.current[index] = el)}
-              />
-            ))}
-          </div>
-        )}
-        {error && (
-          <Alert variant="destructive" className="mt-4">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        {success && (
-          <Alert className="mt-4">
-            <AlertDescription>{success}</AlertDescription>
-          </Alert>
-        )}
-      </CardContent>
-      <CardFooter>
-        <Button onClick={!isOtpSent ? handleSendOtp : handleVerifyOtp} className="w-full">
-          {!isOtpSent ? 'Send OTP' : 'Verify OTP'}
-        </Button>
-      </CardFooter>
-    </Card>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Loading...' : 'Continue'}
+          </button>
+        </form>
+      )}
+
+      {state === 'password' && (
+        <form onSubmit={handlePasswordSubmit}>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            required
+          />
+          <button type="submit" disabled={loading}>
+            {loading ? 'Loading...' : 'Sign In'}
+          </button>
+        </form>
+      )}
+
+      {state === 'createAccount' && (
+        <form onSubmit={handleCreateAccount}>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Loading...' : 'Create New Account'}
+          </button>
+        </form>
+      )}
+
+      {state === 'otp' && (
+        <form onSubmit={handleOtpSubmit}>
+          <input
+            type="text"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+            placeholder="Enter OTP"
+            required
+          />
+          <button type="submit" disabled={loading}>
+            {loading ? 'Loading...' : 'Confirm OTP'}
+          </button>
+        </form>
+      )}
+
+      {state === 'newPassword' && (
+        <form onSubmit={handleNewPasswordSubmit}>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Create new password"
+            required
+          />
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Retype to confirm password"
+            required
+          />
+          <button type="submit" disabled={loading}>
+            {loading ? 'Loading...' : 'Confirm Password'}
+          </button>
+        </form>
+      )}
+    </div>
   );
 };
 
-export default EmailAuthComponent;
+export default AuthFlow;
